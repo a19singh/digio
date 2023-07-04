@@ -1,0 +1,4 @@
+*/migrations/*.py
+*/migrations/*.pyc
+*.swp*
+*__pycache__*
