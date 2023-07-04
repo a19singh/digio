@@ -49,3 +49,8 @@ GET request: http://127.0.0.1:8000/service/get-details/<doc_id>
 - to fetch signed document
 
 GET request: http://127.0.0.1:8000/service/download/<doc_id>
+
+## Improvements
+
+- Validation for uploaded file
+- Oauth Authorization on wrapper methods
