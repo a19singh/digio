@@ -18,11 +18,25 @@ base_url = 'https://ext.digio.in:444'
 
 
 class DocumentView(APIView):
+    """
+    Document View Class
+
+    Method:
+    ------
+        post: wrapper for document upload.
+
+    """
 
     serializer_class = DocumentSerializer
 
     def post(self, request, **kwargs):
-        """Wrapper for doc upload request."""
+        """
+        Wrapper for doc upload request
+
+        Returns
+        -------
+            response: A HttpResponse Object
+        """
         try:
             data = request.data
             serializer = DocumentSerializer(data=data)
@@ -36,9 +50,13 @@ class DocumentView(APIView):
             logger.error(e)
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
-    def upload(self, data):
+    def _upload(self, data):
         """
         Helper to upload data to final endpoint.
+
+        Returns
+        -------
+            response: A RequestResponse Object
         """
         url = f'{base_url}/v2/client/document/upload'
         payload = {}
@@ -71,13 +89,25 @@ class DocumentView(APIView):
 
 
 class DetailsView(APIView):
-    """Get status of uploaded document."""
+    """
+    Document Detail View.
+
+    Method:
+    ------
+        get: wrapper to get details of document.
+
+    """
 
     serializer_class = GetDocument
 
     def get(self, request, **kwargs):
-        """Wrapper for doc upload request."""
+        """
+        Wrapper for doc upload request.
 
+        Returns
+        -------
+            response: A HttpResponse Object
+        """
         try:
             doc_id = kwargs.get('doc_id')
             url = f"{base_url}/v2/client/document/{doc_id}"
@@ -98,12 +128,25 @@ class DetailsView(APIView):
 
 
 class GetDoument(APIView):
-    """Get Signed uploaded document."""
+    """
+    Get Signed uploaded document.
+
+    Method:
+    ------
+        get: wrapper for document download.
+
+    """
 
     serializer_class = GetDocument
 
     def get(self, request, **kwargs):
-        """Wrapper for doc upload request."""
+        """
+        Wrapper for doc upload request.
+
+        Returns
+        -------
+            response: A HttpResponse Object
+        """
 
         try:
             doc_id = kwargs.get('doc_id')
@@ -120,6 +163,7 @@ class GetDoument(APIView):
                                         headers=headers,
                                         data=payload)
 
+            # create a httpresponse for the file
             response = create_response(response.content)
             return response
 
