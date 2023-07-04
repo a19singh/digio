@@ -149,7 +149,7 @@ class GetDoument(APIView):
         """
 
         try:
-            doc_id = kwargs.get('doc_id')
+            doc_id = request.GET.get('document_id')
             url = f"{base_url}/v2/client/document/download?document_id={doc_id}"
             # testing purpose
             # url = f"https://www.africau.edu/images/default/sample.pdf"
@@ -164,8 +164,11 @@ class GetDoument(APIView):
                                         data=payload)
 
             # create a httpresponse for the file
-            response = create_response(response.content)
-            return response
+            if response.status_code in range(200, 210):
+                response = create_response(response.content)
+                return response
+
+            return Response(response.reason, status=response.status_code)
 
         except Exception as e:
             logger.error(e)
