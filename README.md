@@ -52,5 +52,4 @@ GET request: http://127.0.0.1:8000/service/download?document_id=<doc_id>
 
 ## Improvements
 
-- Validation for uploaded file
 - Oauth Authorization on wrapper methods

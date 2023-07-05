@@ -41,7 +41,7 @@ class DocumentView(APIView):
             data = request.data
             serializer = DocumentSerializer(data=data)
             if serializer.is_valid():
-                response = self.upload(data)
+                response = self._upload(data)
                 return Response(response.json(), status=response.status_code)
             else:
                 return Response(serializer.errors,
@@ -59,25 +59,23 @@ class DocumentView(APIView):
             response: A RequestResponse Object
         """
         url = f'{base_url}/v2/client/document/upload'
-        payload = {}
+        request = {}
         signers = [{
             "name": data.get('name'),
             "identifier": data.get('identifier'),
             "reason": data.get('reason')
         }]
-        payload.update({
+        request.update({
             'expire_in_days': data.get('expire_in_days'),
             'display_on_page': data.get('display_on_page'),
             'notify_signers': data.get('notify_signers')
         })
-        payload['signers'] = signers
+        request['signers'] = signers
+        payload = {'request': json.dumps(request)}
         file = data.get('file')
-        payload['file_name'] = file.name
-        payload['file_data'] = base64.b64encode(file.read())
-        files = []
+        files = [('file', (file.name, file.read(), 'application/pdf'))]
         headers = {
             'Authorization': f'Basic {basic_token()}',
-            'content-type': 'application/json'
         }
         response = requests.request("POST",
                                     url,
