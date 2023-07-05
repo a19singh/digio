@@ -48,7 +48,7 @@ GET request: http://127.0.0.1:8000/service/get-details/<doc_id>
 
 - to fetch signed document
 
-GET request: http://127.0.0.1:8000/service/download/?document_id=<doc_id>
+GET request: http://127.0.0.1:8000/service/download?document_id=<doc_id>
 
 ## Improvements
 
